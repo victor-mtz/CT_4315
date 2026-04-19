@@ -30,4 +30,8 @@ public class Car {
   public Customer getOwner() {
 	return this.owner;
   }
+  
+  public void setCarType(CarType type) {
+	  this.type = type;
+  }
 }
