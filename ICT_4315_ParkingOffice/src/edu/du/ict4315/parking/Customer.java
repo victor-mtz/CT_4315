@@ -12,20 +12,45 @@ public class Customer {
 	private String phoneNumber;
 	private Address address;
 	
-	public Customer() {
-		id = String.valueOf(UUID.randomUUID());
-		firstName = "Customer";
-		lastName = "One";
-		phoneNumber = "111-222-3456";
-		address = new Address();
-	}
-	
-	public Customer(String id, String firstName, String lastName, String phoneNumber, Address address) {
-		this.id = id;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.phoneNumber = phoneNumber;
-		this.address = address;
+	public class CustomerBuilder {
+		private final String id = String.valueOf(UUID.randomUUID());
+		private String firstName;
+		private String lastName;
+		private String phoneNumber;
+		private Address address;
+		
+		public CustomerBuilder() {
+		}
+		
+		public CustomerBuilder firstName(String firstName) {
+			this.firstName = firstName;
+			return this;
+		}
+		
+		public CustomerBuilder lastName(String lastName) {
+			this.lastName = lastName;
+			return this;
+		}
+		
+		public CustomerBuilder phoneNumber(String phoneNumber) {
+			this.phoneNumber = phoneNumber;
+			return this;
+		}
+		
+		public CustomerBuilder Address(Address address) {
+			this.address = address;
+			return this;
+		}
+		
+		public Customer buildCustomer() {
+			Customer customer = new Customer();
+			customer.firstName = this.firstName;
+			customer.lastName = this.lastName;
+			customer.phoneNumber = this.phoneNumber;
+			customer.address = this.address;
+			
+			return customer;
+		}
 	}
 	
 	public String getCustomerName() {
@@ -36,3 +61,4 @@ public class Customer {
 		return this.id;
 	}
 }
+

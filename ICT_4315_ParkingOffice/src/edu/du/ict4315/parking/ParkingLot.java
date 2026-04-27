@@ -6,6 +6,8 @@ package edu.du.ict4315.parking;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import edu.du.ict4315.parking.charges.factory.ParkingChargeStrategyFactory;
+import edu.du.ict4315.parking.charges.factory.ParkingChargeStrategyType;
 import edu.du.ict4315.parking.charges.strategy.ParkingChargeStrategy;
 import ude.du.ict4315.currency.Money;
 
@@ -37,8 +39,9 @@ public class ParkingLot {
     	return this.chargeStrategy;
     }
     
-    public void setStrategy(ParkingChargeStrategy newStrategy) {
-    	this.chargeStrategy = newStrategy;
+    public void setStrategy(ParkingChargeStrategyType strategyType) {
+    	ParkingChargeStrategyFactory strategyFactory = new ParkingChargeStrategyFactory();
+    	this.chargeStrategy = strategyFactory.makeStrategy(strategyType);
     }
     
     public Money calculateCharge(
@@ -47,6 +50,11 @@ public class ParkingLot {
     		ParkingPermit permit,
     		boolean useDiscount) {
     	Money dailyRate = this.getDailyRate();
-    	return this.chargeStrategy.calculateParkingCharge(dailyRate, entryTime, exitTime, permit);
+    	if (this.chargeStrategy != null) {
+    		return this.chargeStrategy.calculateParkingCharge(dailyRate, entryTime, exitTime, permit);
+    	} else {
+    		throw new IllegalArgumentException("Charge strategy not set for Parking Lot.");
+    	}
+    	
     }
 }

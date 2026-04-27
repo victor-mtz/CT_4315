@@ -9,10 +9,47 @@ import java.util.Date;
 import ude.du.ict4315.currency.Money;
 
 public class ParkingTransaction {
-	private Date date = Date.from(Instant.now());
-	private ParkingPermit permit = new ParkingPermit(new Car());
-	private ParkingLot parkingLot = new ParkingLot();
-	private Money chargedAmount = new Money();
+	private Date date;
+	private ParkingPermit permit;
+	private ParkingLot parkingLot;
+	private Money chargedAmount;
+	
+	public class ParkingTransactionBuilder {
+		private Date date;
+		private ParkingPermit permit;
+		private ParkingLot parkingLot;
+		private Money chargedAmount;
+		
+		public ParkingTransactionBuilder date(Date date) {
+			this.date = date;
+			return this;
+		}
+		
+		public ParkingTransactionBuilder permit(ParkingPermit permit) {
+			this.permit = permit;
+			return this;
+		}
+		
+		public ParkingTransactionBuilder parkingLot(ParkingLot parkingLot) {
+			this.parkingLot = parkingLot;
+			return this;
+		}
+		
+		public ParkingTransactionBuilder chargedAmount(Money chargedAmount) {
+			this.chargedAmount = chargedAmount;
+			return this;
+		}
+		
+		public ParkingTransaction buildParkingTransaction() {
+			ParkingTransaction parkingTransaction = new ParkingTransaction();
+			parkingTransaction.date = this.date;
+			parkingTransaction.permit = this.permit;
+			parkingTransaction.parkingLot = this.parkingLot;
+			parkingTransaction.chargedAmount = this.chargedAmount;
+			
+			return parkingTransaction;
+		}
+	}
 	
 	public Money getChargedAmount() {
 		// TODO: get the actual charged amount
