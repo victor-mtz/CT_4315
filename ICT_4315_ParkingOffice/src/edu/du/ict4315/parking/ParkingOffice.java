@@ -48,4 +48,12 @@ public class ParkingOffice {
   public String register(Car car) {
 	  return new ParkingPermit(car).getPermitId();
   }
+  
+  public List<ParkingLot> getParkingLots() {
+	  return this.listOfParkingLots;
+  }
+  
+  public void addParkingLot(ParkingLot lot) {
+	  this.listOfParkingLots.add(lot);
+  }
 }

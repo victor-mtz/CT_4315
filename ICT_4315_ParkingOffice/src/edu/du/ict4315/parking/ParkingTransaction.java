@@ -14,7 +14,7 @@ public class ParkingTransaction {
 	private ParkingLot parkingLot;
 	private Money chargedAmount;
 	
-	public class ParkingTransactionBuilder {
+	public static class ParkingTransactionBuilder {
 		private Date date;
 		private ParkingPermit permit;
 		private ParkingLot parkingLot;
