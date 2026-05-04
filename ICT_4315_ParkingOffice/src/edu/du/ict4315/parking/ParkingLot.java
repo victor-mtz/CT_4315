@@ -5,6 +5,8 @@ package edu.du.ict4315.parking;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import edu.du.ict4315.parking.charges.factory.ParkingChargeStrategyFactory;
 import edu.du.ict4315.parking.charges.factory.ParkingChargeStrategyType;
@@ -19,6 +21,7 @@ public class ParkingLot {
     private double hourlyRate = 5;
     private double dailyRate = 15;
     private ParkingChargeStrategy chargeStrategy;
+    private List<ParkingAction> observers = new ArrayList<>();
     
     public ParkingLot() {
     	
@@ -56,5 +59,29 @@ public class ParkingLot {
     		throw new IllegalArgumentException("Charge strategy not set for Parking Lot.");
     	}
     	
+    }
+    
+    public void addObserver(ParkingObserver observer) {
+    	this.observers.add(observer);
+    }
+    
+    public void removerObserver(ParkingObserver observer) {
+    	this.observers.remove(observer);
+    }
+    
+    public void enter(ParkingPermit permit) {
+    	ParkingEvent parkingEvent = new ParkingEvent(this, ParkingEventType.ENTRY, LocalDateTime.now(), permit);
+    	this.notifyObservers(parkingEvent);
+    }
+    
+    public void exit(ParkingPermit permit) {
+    	ParkingEvent parkingEvent = new ParkingEvent(this, ParkingEventType.EXIT, LocalDateTime.now(), permit);
+    	this.notifyObservers(parkingEvent);
+    }
+    
+    private void notifyObservers(ParkingEvent event) {
+    	for (ParkingAction observer : observers) {
+    		observer.update(event);
+    	}
     }
 }

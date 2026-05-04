@@ -39,5 +39,41 @@ class ParkingLotTest {
 		ParkingChargeStrategy lotStrategy = parkingLot.getStrategy();
 		assertTrue(lotStrategy instanceof DayOfWeekRate);
 	}
+	
+	@Test
+	void observerEnterEvent() {
+		ParkingOffice office = new ParkingOffice();
+		office.addParkingLot(parkingLot);
+		
+		TransactionManager manager = new TransactionManager(office);
+		ParkingObserver observer = new ParkingObserver(office, manager);
+		
+		Car car = new Car();
+		ParkingPermit permit = new ParkingPermit(car);
+		
+		parkingLot.enter(permit);
+		
+		assertEquals(1, manager.getTransactions().size());
+	}
+	
+	@Test
+	void multipleObservers() {
+		ParkingOffice office = new ParkingOffice();
+		office.addParkingLot(parkingLot);
+		
+		TransactionManager manager1 = new TransactionManager(office);
+		ParkingObserver observer = new ParkingObserver(office, manager1);
+		
+		TransactionManager manager2 = new TransactionManager(office);
+		ParkingObserver observer2 = new ParkingObserver(office, manager2);
+		
+		Car car = new Car();
+		ParkingPermit permit = new ParkingPermit(car);
+		
+		parkingLot.enter(permit);
+		
+		assertEquals(1, manager1.getTransactions().size());
+		assertEquals(1, manager2.getTransactions().size());
+	}
 
 }
